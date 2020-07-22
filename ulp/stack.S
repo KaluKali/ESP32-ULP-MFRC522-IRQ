@@ -53,7 +53,6 @@
 .endm
 
 .macro read_IRQ
-	// נואה טהוע ג r0
 	READ_RTC_REG(RTC_GPIO_IN_REG, RTC_GPIO_IN_NEXT_S + 9, 1)
 .endm
 .macro read_MISO
