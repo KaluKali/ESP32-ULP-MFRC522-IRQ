@@ -1,4 +1,4 @@
-##esp32-ulp-MFRC522-IRQ
+## esp32-ulp-MFRC522-IRQ
 
 Using interrupt on mfrc522 with ulp.
 You are changed pins for spi if you dont use SPI on main cores esp32.
@@ -10,7 +10,7 @@ For example:
 `
 READ_RTC_REG (RTC_GPIO_IN_REG, RTC_GPIO_IN_NEXT_S + {YOUR RTC-PORT}, 1)`
 
-##PINS
+## PINS
 
 | PIN  | USAGE |
 | ------------- | ------------- |
