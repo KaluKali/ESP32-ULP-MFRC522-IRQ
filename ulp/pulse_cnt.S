@@ -1,7 +1,7 @@
 #include "soc/rtc_cntl_reg.h"
 #include "soc/rtc_io_reg.h"
 #include "soc/soc_ulp.h"
-// макросы
+// macros
 #include "stack.S"
 
 	.set bit_mask, 	0x8000
@@ -22,24 +22,18 @@ next_edge:
 	.global entry
 entry:
 /*
-r1 свободен
-r2 в функциях
-r3 для подпрограммы перехода
-r0 изменяется READ_RTC_REG
-todo (.+16)
-переделать на jumpr func,порог,условие
-EQ (равно) - перейти, если значение в R0 == порог
-LT (меньше) - скачок, если значение в R0 <порог
-LE (меньше или равно) - скачок, если значение в R0 <= порог
-GT (больше чем) - перейти, если значение в R0> порог
-GE (больше или равно) - переход, если значение в R0> = порог
+r1 free
+r2 free, change in function
+r3 Return from subroutine
+r0 change RTC_READ_REG
 */
 	clear_MOSI
 	clear_SCLK
 	set_CS
 
-	rc522_write_data 0x0100 0x0f00
-	wait 8000*50 // по докам ждать 50ms
+	rc522_write_data 0x0100 0x0f00 // restart mfrc
+	wait 8000*50
+	// init mfrc
 	rc522_write_data 0x2A00 0x8D00
 	rc522_write_data 0x2B00 0x3E00
 	rc522_write_data 0x2D00 0x1E00
@@ -49,7 +43,7 @@ GE (больше или равно) - переход, если значение в R0> = порог
 	rc522_write_data 0x1400 0x8300
 	rc522_write_data 0x2600 0x6000
 	rc522_write_data 0x0200 0xA000
-
+	// end init mfrc
 	jump irq_wait
 
   .global irq_wait
@@ -58,7 +52,7 @@ irq_wait:
 	rc522_write_data 0x0100 0x0c00
 	rc522_write_data 0x0d00 0x8700
 	move r2,100
-	wait 8000*90 // ждать 100ms
+	wait 8000*90 // 90ms
 	//
 	move r2, io_number
 	ld r2, r2, 0
@@ -82,12 +76,9 @@ irq_wait:
 	ld r2, r2, 0
 	add r2, r0, r2
 	and r2, r2, 1
-	//eq - * если результат последней работы ALU = 0 -> jump *
 	jump wake_up, eq
 	jump irq_wait
 
-
-// Писать в r2 для транзакции
   .global SPI_Write
 SPI_Write:
 	move r0,0
@@ -103,13 +94,9 @@ loop1_bit0:
 	clear_MOSI
 loop1_bit1:
 	spi_delay
-	// формирование тактовика
 	set_SCLK
-	// делей для фреймов
 	spi_delay
-	// счетчик до bit_len
 	stage_inc 1
-	// цикл пока stage не будет bit_len, (это lt)
 	jumps write_loop1, bit_len, lt
 	clear_SCLK
 	jump spi_write_byte_end
