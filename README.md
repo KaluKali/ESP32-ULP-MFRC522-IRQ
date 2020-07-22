@@ -9,6 +9,7 @@ For example:
 
 `
 READ_RTC_REG (RTC_GPIO_IN_REG, RTC_GPIO_IN_NEXT_S + {YOUR RTC-PORT}, 1)`
+
 ##PINS
 
 | PIN  | USAGE |
