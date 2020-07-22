@@ -5,6 +5,7 @@ You are changed pins for spi if you dont use SPI on main cores esp32.
 
 
 For change pins you must write RTC port instead of + port in the stack.S
+
 For example:
 
 `
