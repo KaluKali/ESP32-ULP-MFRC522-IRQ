@@ -9,7 +9,7 @@ For change pins you must write RTC port instead of + port in the stack.S
 For example:
 
 `
-READ_RTC_REG (RTC_GPIO_IN_REG, RTC_GPIO_IN_NEXT_S + {YOUR RTC-PORT}, 1)`
+READ_RTC_REG (RTC_GPIO_IN_REG, RTC_GPIO_IN_NEXT_S + {YOUR RTC-PIN}, 1)`
 
 ## PINS
 
