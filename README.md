@@ -1,6 +1,6 @@
 ## esp32-ulp-MFRC522-IRQ
 
-Using interrupt on mfrc522 with ulp.
+Using interrupt on mfrc522 with ulp for wakeup main core.
 You are changed pins for spi if you dont use SPI on main cores esp32.
 
 
